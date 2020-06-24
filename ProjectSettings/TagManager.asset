@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Enemy
   - Coin
+  - Portal
   layers:
   - Default
   - TransparentFX
