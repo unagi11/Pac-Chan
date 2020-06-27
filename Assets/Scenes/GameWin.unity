@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 196547449}
   - component: {fileID: 196547448}
   - component: {fileID: 196547447}
+  - component: {fileID: 196547451}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -220,6 +221,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &196547451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196547446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 291f1a2313aecae49b449930a614b589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 0}
 --- !u!1 &926933481
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,7 +580,6 @@ GameObject:
   - component: {fileID: 1837179618}
   - component: {fileID: 1837179617}
   - component: {fileID: 1837179616}
-  - component: {fileID: 1837179615}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -593,19 +606,6 @@ RectTransform:
   m_AnchoredPosition: {x: -100, y: 100}
   m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 1, y: 0}
---- !u!114 &1837179615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1837179613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 291f1a2313aecae49b449930a614b589, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 0}
 --- !u!114 &1837179616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,8 +649,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1837179615}
-        m_MethodName: ReGame
+      - m_Target: {fileID: 196547451}
+        m_MethodName: GameStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

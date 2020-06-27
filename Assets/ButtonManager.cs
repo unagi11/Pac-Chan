@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class TouchButton : MonoBehaviour
+public class ButtonManager : MonoBehaviour
 {
     public CanvasGroup canvasGroup;
 
@@ -20,8 +20,13 @@ public class TouchButton : MonoBehaviour
             canvasGroup.alpha = 1f;
     }
 
-    public void ReGame()
+    public void GameStart()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void LisenceURL()
+    {
+        Application.OpenURL("https://unity-chan.com/contents/license_en/");
     }
 }

@@ -12,6 +12,7 @@ public class GhostAI : MonoBehaviour
     public Vector3 spawnVector;
 
     public float updateTime = 0.1f;
+    public float updateAngle = 5f;
     public float moveSpeed = 2f;
     public float rotationSpeed = 6f;
 
@@ -83,19 +84,30 @@ public class GhostAI : MonoBehaviour
 
     IEnumerator WaitAndUpdate(float waitTime)
     {
-        Vector3 temp = transform.position;
-        Vector3 lateVector = transform.position;
+        Vector3 temp = transform.position;//판단할때마다 갱신
+        Vector3 lateVector = transform.position;//waitTime마다 갱신
         while (true)
         {
-            if ((transform.position - temp).magnitude > 0.5) // 한칸 움직였을 경우 판단
-            {
-                GhostAlgo();
-                temp = transform.position;
-            } else if ((lateVector - transform.position).magnitude < 0.1) // 벽에 박을때마다 판단 (정지 상태에 가까운 경우)
+            Debug.Log(Quaternion.Angle(rotation, transform.rotation));
+            if (Quaternion.Angle(rotation, transform.rotation) < updateAngle) // 회전중이 아닐때만 판단
             {
                 GhostAlgo();
                 temp = transform.position;
             }
+/*            if ((transform.position - temp).magnitude > 0.5) // 한칸 움직였을 경우 판단
+            {
+                Debug.LogError("GhostAlgo1");
+
+                GhostAlgo();
+                temp = transform.position;
+            }
+            else if ((lateVector - transform.position).magnitude < 0.1) // 벽에 박을때마다 판단 (정지 상태에 가까운 경우)
+            {
+                Debug.LogError("GhostAlgo2");
+                GhostAlgo();
+                temp = transform.position;
+            }*/
+
             //Debug.LogError((lateVector - transform.position).magnitude);
             lateVector = transform.position;
             yield return new WaitForSeconds(waitTime);
@@ -135,8 +147,9 @@ public class GhostAI : MonoBehaviour
     }
 
     public void GhostAlgo()
-{
-        List <GhostSensor> tempSensors = new List<GhostSensor>();
+    {
+
+        List<GhostSensor> tempSensors = new List<GhostSensor>();
 
         foreach (GhostSensor Sensor in Sensors)
             if (Sensor.current != MapManager.MapObjectCategory.Wall && Sensor.SensorDirection != MoveDirection.Back)

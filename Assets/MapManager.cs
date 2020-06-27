@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
+
     public static MapManager instance;
 
     public GameObject [] MapObject;
@@ -73,7 +74,7 @@ public class MapManager : MonoBehaviour
         {
             for (int x = 0; x < currentMap.GetLength(1); x++)
             {
-                switch (currentMap[y,x])
+                switch (currentMap[y, x])
                 {
                     case 0:
                         continue;
@@ -91,3 +92,4 @@ public class MapManager : MonoBehaviour
         }
     }
 }
+
