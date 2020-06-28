@@ -3,6 +3,7 @@ using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class GhostAI : MonoBehaviour
@@ -29,6 +30,7 @@ public class GhostAI : MonoBehaviour
      * 
      */
 
+
     public enum MoveDirection
     {
         Stop = 0, Front = 1, Left = 2, Back = 3, Right = 4
@@ -49,6 +51,8 @@ public class GhostAI : MonoBehaviour
 
     public MoveDirection currentDirection = MoveDirection.Stop;
     public GhostState currentState = GhostState.Chase;
+    GhostState tempState = GhostState.Chase;
+
     Vector3 direction;
     Quaternion rotation;
 
@@ -58,8 +62,9 @@ public class GhostAI : MonoBehaviour
         currentDirection = MoveDirection.Front; //초기화
         direction = transform.forward;
         rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0).normalized;
-        SetTarget(chaseObject);
         spawnVector = transform.position;
+
+        SetGhostChase();
     }
 
     public void SetTarget(GameObject _targetObject)
@@ -94,7 +99,8 @@ public class GhostAI : MonoBehaviour
                 GhostAlgo();
                 temp = transform.position;
             }
-/*            if ((transform.position - temp).magnitude > 0.5) // 한칸 움직였을 경우 판단
+            
+            /*if ((transform.position - temp).magnitude > 0.5) // 한칸 움직였을 경우 판단
             {
                 Debug.LogError("GhostAlgo1");
 
@@ -114,10 +120,100 @@ public class GhostAI : MonoBehaviour
         }
     }
 
-    public void SetGhostState(GhostState ghostState, float time)
-    {
+    Coroutine runningStateCoroutine = null; //StopCoroutine용
 
+    [SerializeField]
+    float chaseTime = 20f;
+    [SerializeField]
+    float scatterTime = 10f;
+    [SerializeField]
+    float frightenTime = 5f;
+
+    public void SetGhostChase()
+    {
+        SetTarget(chaseObject);//Chase화
+        currentState = GhostState.Chase;//Chase화
+
+        if (runningStateCoroutine != null) //억지로 바뀐경우면 runningStateCoroutine이 null이 아니다. Chase랑 Scatter은 억지로 바뀌어도 딱히 할게 없음.
+            StopCoroutine(runningStateCoroutine);
+
+        runningStateCoroutine = StartCoroutine(DelayAndAction(chaseTime, () =>
+        {
+            runningStateCoroutine = null; // 상태가 끝까지 갔다는 표시로 Coroutine을 null로 초기화해준다.
+            SetGhostScatter();
+        }));
     }
+    public void SetGhostScatter()
+    {
+        if (scatterTime > 2f) //scatter 상태가 호출 될때마다 줄어든다.
+            scatterTime -= 2f;
+        SetTarget(scatterVector);//Scatter화
+        currentState = GhostState.Scatter;//Scatter화
+
+        if (runningStateCoroutine != null) //억지로 바뀐경우면 runningStateCoroutine이 null이 아니다. Chase랑 Scatter은 억지로 바뀌어도 딱히 할게 없음.
+            StopCoroutine(runningStateCoroutine);
+
+        runningStateCoroutine = StartCoroutine(DelayAndAction(scatterTime, () =>
+        {
+            runningStateCoroutine = null; // 상태가 끝까지 갔다는 표시로 Coroutine을 null로 초기화해준다.
+            SetGhostChase();
+        }));
+    }
+    public void SetGhostFrighten()
+    {
+        SetTarget(scatterVector); //수정요함 : Frighten Vector 혹은 Frighten Target
+        tempState = currentState;
+        currentState = GhostState.Frighten;
+
+        if (runningStateCoroutine != null)
+            StopCoroutine(runningStateCoroutine);
+
+        runningStateCoroutine = StartCoroutine(DelayAndAction(frightenTime, () =>
+        {
+            if (tempState == GhostState.Chase)
+            {
+                runningStateCoroutine = null;
+                SetGhostChase();
+            } else if (tempState == GhostState.Scatter)
+            {
+                runningStateCoroutine = null;
+                SetGhostScatter();
+            }
+        }));
+    }
+    public void SetGhostEaten()
+    {
+        SetTarget(spawnVector);
+        tempState = currentState;
+        currentState = GhostState.Eaten;
+
+        if (runningStateCoroutine != null)
+            StopCoroutine(runningStateCoroutine);
+
+        runningStateCoroutine = StartCoroutine(DelayAndAction(frightenTime, () =>
+        {
+            if (tempState == GhostState.Chase)
+            {
+                runningStateCoroutine = null;
+                SetGhostChase();
+            }
+            else if (tempState == GhostState.Scatter)
+            {
+                runningStateCoroutine = null;
+                SetGhostScatter();
+            }
+        }));
+    }
+
+    public IEnumerator DelayAndAction(float time, Action func)
+    {
+        yield return new WaitForSeconds(time);
+        func.Invoke();
+    }
+
+    //예약
+    //영구
+    //수정
 
     public void GhostMove()
     {

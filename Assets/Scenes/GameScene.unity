@@ -920,7 +920,7 @@ PrefabInstance:
     - target: {fileID: 8170153791668043268, guid: 0d230cc8be529a542a08cb878ab14b18,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8170153791668043268, guid: 0d230cc8be529a542a08cb878ab14b18,
         type: 3}
@@ -93267,7 +93267,7 @@ PrefabInstance:
       objectReference: {fileID: 642194198}
     - target: {fileID: 1899915112, guid: d15f4d1c37b9f354c8be7e47517eb31c, type: 3}
       propertyPath: updateTime
-      value: 0.25
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 1899915112, guid: d15f4d1c37b9f354c8be7e47517eb31c, type: 3}
       propertyPath: scatterVector.x
@@ -93287,11 +93287,15 @@ PrefabInstance:
       objectReference: {fileID: 642194198}
     - target: {fileID: 1899915112, guid: d15f4d1c37b9f354c8be7e47517eb31c, type: 3}
       propertyPath: moveSpeed
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1899915112, guid: d15f4d1c37b9f354c8be7e47517eb31c, type: 3}
       propertyPath: rotationSpeed
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899915112, guid: d15f4d1c37b9f354c8be7e47517eb31c, type: 3}
+      propertyPath: updateAngle
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 44277218683887843, guid: d15f4d1c37b9f354c8be7e47517eb31c,
         type: 3}
@@ -93367,6 +93371,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 919300031054296757, guid: cfc8259af7c20ae408b61c4b2cccccfc,
+        type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000,
+        type: 0}
     - target: {fileID: 940019749174148176, guid: cfc8259af7c20ae408b61c4b2cccccfc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -93432,11 +93442,22 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1321243090}
+    - target: {fileID: 5744897053371933980, guid: cfc8259af7c20ae408b61c4b2cccccfc,
+        type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000,
+        type: 0}
     - target: {fileID: 5744897054345635796, guid: cfc8259af7c20ae408b61c4b2cccccfc,
         type: 3}
       propertyPath: joystick
       value: 
       objectReference: {fileID: 557301785}
+    - target: {fileID: 5744897054345635796, guid: cfc8259af7c20ae408b61c4b2cccccfc,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfc8259af7c20ae408b61c4b2cccccfc, type: 3}
 --- !u!20 &4806017645027837032

@@ -5,6 +5,7 @@ using UnityEngine;
 public class ObjectManager : MonoBehaviour
 {
     public AudioClip GetSound;
+    public GameObject GetParticle;
 
     // Update is called once per frame
     void Update()
@@ -19,6 +20,8 @@ public class ObjectManager : MonoBehaviour
             PlayerManager.instance.CoinUp();
             if (GetSound != null)
                 AudioManager.instance.PlaySEOnce(GetSound);
+            if (GetParticle != null)
+                Instantiate(GetParticle, transform.position, Quaternion.identity);
             Destroy(transform.parent.gameObject, 0.2f);
         }
     }
