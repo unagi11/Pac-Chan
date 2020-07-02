@@ -3,7 +3,6 @@ using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class GhostAI : MonoBehaviour
@@ -93,7 +92,7 @@ public class GhostAI : MonoBehaviour
         Vector3 lateVector = transform.position;//waitTime마다 갱신
         while (true)
         {
-            Debug.Log(Quaternion.Angle(rotation, transform.rotation));
+//            Debug.Log(Quaternion.Angle(rotation, transform.rotation));
             if (Quaternion.Angle(rotation, transform.rotation) < updateAngle) // 회전중이 아닐때만 판단
             {
                 GhostAlgo();
@@ -125,7 +124,7 @@ public class GhostAI : MonoBehaviour
     [SerializeField]
     float chaseTime = 20f;
     [SerializeField]
-    float scatterTime = 10f;
+    public static float scatterTime = 10f;
     [SerializeField]
     float frightenTime = 5f;
 

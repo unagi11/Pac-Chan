@@ -7,12 +7,15 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
 
-    public int CoinNumber = 0;
     public int Score;
+
+    [SerializeField]
+    GameObject[] Enemys;
 
     private void Awake()
     {
         instance = this;
+        Enemys = GameObject.FindGameObjectsWithTag("Enemy");
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -21,12 +24,28 @@ public class PlayerManager : MonoBehaviour
             SceneManager.LoadScene("GameOver");
     }
 
-    public void CoinUp()
+    public void GetScore()
     {
-        CoinNumber++;
-//        Debug.LogError("Coin : " + PlayerManager.instance.CoinNumber);
-        if (CoinNumber == 194)
+        AudioManager.instance.PlaySEOnce(AudioManager.instance.GetCoinAudio);
+        Score++;
+        if (Score == 194)
             SceneManager.LoadScene("GameWin");
+    }
+
+    public void GetScore(int score)
+    {
+        Score += score;
+        if (Score == 194)
+            SceneManager.LoadScene("GameWin");
+    }
+
+
+    public void GetPower()
+    {
+        AudioManager.instance.ChangeBGM(AudioManager.instance.GetPowerAudio, GhostAI.scatterTime);
+
+        foreach (GameObject enemy in Enemys)
+            enemy.GetComponent<GhostAI>().SetGhostFrighten();
     }
 
 }

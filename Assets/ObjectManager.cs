@@ -4,24 +4,37 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
-    public AudioClip GetSound;
     public GameObject GetParticle;
+
+    Camera main;
+
+    private void Start()
+    {
+        main = Camera.main;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = Quaternion.LookRotation(Camera.main.transform.forward);
+        transform.rotation = Quaternion.LookRotation(main.transform.forward);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            PlayerManager.instance.CoinUp();
-            if (GetSound != null)
-                AudioManager.instance.PlaySEOnce(GetSound);
+            if (CompareTag("Score"))
+            {
+                PlayerManager.instance.GetScore();
+            }
+            else if (CompareTag("Power"))
+            {
+                PlayerManager.instance.GetPower();
+            }
+
             if (GetParticle != null)
                 Instantiate(GetParticle, transform.position, Quaternion.identity);
+
             Destroy(transform.parent.gameObject, 0.2f);
         }
     }

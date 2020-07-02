@@ -19,7 +19,7 @@ public class MoveTest : MonoBehaviour
 
     private void FixedUpdate()
     {
-        hor = Input.GetAxisRaw("Horizonta   l");
+        hor = Input.GetAxisRaw("Horizontal");
         ver = Input.GetAxisRaw("Vertical");
 
         MoveFunc(hor, ver);

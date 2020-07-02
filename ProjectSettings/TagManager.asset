@@ -7,8 +7,10 @@ TagManager:
   - DamageObject
   - Wall
   - Enemy
-  - Coin
   - Portal
+  - FxTemporaire
+  - Power
+  - Score
   layers:
   - Default
   - TransparentFX
