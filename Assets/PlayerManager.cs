@@ -10,12 +10,20 @@ public class PlayerManager : MonoBehaviour
     public int Score;
 
     [SerializeField]
+    int NumOfScore;
+
+    [SerializeField]
     GameObject[] Enemys;
 
     private void Awake()
     {
         instance = this;
+    }
+
+    private void Start()
+    {
         Enemys = GameObject.FindGameObjectsWithTag("Enemy");
+        NumOfScore = GameObject.FindGameObjectsWithTag("Score").Length;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -28,14 +36,14 @@ public class PlayerManager : MonoBehaviour
     {
         AudioManager.instance.PlaySEOnce(AudioManager.instance.GetCoinAudio);
         Score++;
-        if (Score == 194)
+        if (Score == NumOfScore)
             SceneManager.LoadScene("GameWin");
     }
 
     public void GetScore(int score)
     {
         Score += score;
-        if (Score == 194)
+        if (Score == NumOfScore)
             SceneManager.LoadScene("GameWin");
     }
 

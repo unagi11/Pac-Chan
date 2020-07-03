@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class ScreenManger : MonoBehaviour
 {
     private void Awake()
     {
+        CanvasScaler canvasScaler = GetComponent<CanvasScaler>();
+
         Camera camera = Camera.main;
         Rect rect = camera.rect;
 
@@ -17,11 +20,15 @@ public class ScreenManger : MonoBehaviour
         {
             rect.height = scaleheight;
             rect.y = (1f - scaleheight) / 2f;
+
+            canvasScaler.matchWidthOrHeight = 0f;
         }
         else
         {
             rect.width = scalewidth;
             rect.x = (1f - scalewidth) / 2f;
+
+            canvasScaler.matchWidthOrHeight = 1f;
         }
         camera.rect = rect;
     }
