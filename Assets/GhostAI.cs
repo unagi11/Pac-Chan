@@ -124,9 +124,9 @@ public class GhostAI : MonoBehaviour
     [SerializeField]
     float chaseTime = 20f;
     [SerializeField]
-    public static float scatterTime = 10f;
+    float scatterTime = 10f;
     [SerializeField]
-    float frightenTime = 5f;
+    public static float frightenTime = 5f;
 
     public void SetGhostChase()
     {

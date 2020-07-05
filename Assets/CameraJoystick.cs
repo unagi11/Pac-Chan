@@ -13,7 +13,10 @@ public class CameraJoystick : MonoBehaviour, IDragHandler, IPointerDownHandler, 
     float angleLimit = 360f;
 
     [SerializeField]
-    float angleSpeedDown = 100f;
+    float angleSpeedDown = 10f;
+
+    [SerializeField]
+    float angleSpeedLimit = 5f;
 
     Vector2 first = Vector3.zero;
 
@@ -23,6 +26,9 @@ public class CameraJoystick : MonoBehaviour, IDragHandler, IPointerDownHandler, 
     {
         Horizontal = (temp.x - eventData.position.x) / angleSpeedDown;
         Vertical = (eventData.position.y - first.y) / angleSpeedDown;
+
+        if (Mathf.Abs(Horizontal) > angleSpeedLimit)
+            Horizontal = angleSpeedLimit * (Horizontal/Mathf.Abs(Horizontal));
 
         angle_v += Horizontal;
         temp = eventData.position;

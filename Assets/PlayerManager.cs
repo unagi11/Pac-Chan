@@ -50,7 +50,7 @@ public class PlayerManager : MonoBehaviour
 
     public void GetPower()
     {
-        AudioManager.instance.ChangeBGM(AudioManager.instance.GetPowerAudio, GhostAI.scatterTime);
+        AudioManager.instance.ChangeBGM(AudioManager.instance.GetPowerAudio, GhostAI.frightenTime);
 
         foreach (GameObject enemy in Enemys)
             enemy.GetComponent<GhostAI>().SetGhostFrighten();
