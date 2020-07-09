@@ -116,7 +116,7 @@ GameObject:
   m_Layer: 0
   m_Name: 4frontTarget
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1071,6 +1071,8 @@ MonoBehaviour:
   ver: 0
   joy_ver: 0
   joystick: {fileID: 0}
+  front: {x: 0, y: 0, z: 0}
+  right: {x: 0, y: 0, z: 0}
 --- !u!114 &5744897054345635755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1084,6 +1086,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Score: 0
+  NumOfScore: 0
   Enemys: []
 --- !u!1 &940019749174396578
 GameObject:
@@ -5984,7 +5987,7 @@ GameObject:
   m_Layer: 0
   m_Name: 2frontTarget
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

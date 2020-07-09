@@ -64,7 +64,7 @@ public class FirstPersonMove : MonoBehaviour
 
 //        Debug.LogError(Mathf.Acos(ver / Mathf.Sqrt(ver * ver + hor * hor))/Mathf.PI * 180);
 
-//[        _rigidbody.MoveRotation(Quaternion.Euler(new Vector3(0, _camera.transform.rotation.eulerAngles.y, 0)));
+//        _rigidbody.MoveRotation(Quaternion.Euler(new Vector3(0, _camera.transform.rotation.eulerAngles.y, 0)));
     }
 
     void CameraMoveFunc(float ver1, float ver2, float hor1, float hor2)

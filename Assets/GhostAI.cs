@@ -16,6 +16,9 @@ public class GhostAI : MonoBehaviour
     public float moveSpeed = 2f;
     public float rotationSpeed = 6f;
 
+    public GameObject FrightenEffect;
+    public GameObject EatenEffect;
+
     public GhostSensor [] Sensors;
 
     /* 0 - front
@@ -28,7 +31,6 @@ public class GhostAI : MonoBehaviour
      * Level 2 ~ : 7, 20, 7, 20, 5, 무한
      * 
      */
-
 
     public enum MoveDirection
     {
@@ -66,7 +68,7 @@ public class GhostAI : MonoBehaviour
         SetGhostChase();
     }
 
-    public void SetTarget(GameObject _targetObject)
+    public void SetTarget(GameObject _targetObject) //Object 우선한다.
     {
         foreach (GhostSensor Sensor in Sensors)
             Sensor.targetObject = _targetObject;
@@ -86,18 +88,20 @@ public class GhostAI : MonoBehaviour
         GhostMove();
     }
 
+    Action GhostAlgo;
+
     IEnumerator WaitAndUpdate(float waitTime)
     {
-        Vector3 temp = transform.position;//판단할때마다 갱신
-        Vector3 lateVector = transform.position;//waitTime마다 갱신
+//        Vector3 temp = transform.position;//판단할때마다 갱신
+//        Vector3 lateVector = transform.position;//waitTime마다 갱신
         while (true)
         {
 //            Debug.Log(Quaternion.Angle(rotation, transform.rotation));
             if (Quaternion.Angle(rotation, transform.rotation) < updateAngle) // 회전중이 아닐때만 판단
-            {
-                GhostAlgo();
-                temp = transform.position;
-            }
+//            {
+                GhostAlgo.Invoke();
+//                temp = transform.position;
+//            }
             
             /*if ((transform.position - temp).magnitude > 0.5) // 한칸 움직였을 경우 판단
             {
@@ -114,7 +118,8 @@ public class GhostAI : MonoBehaviour
             }*/
 
             //Debug.LogError((lateVector - transform.position).magnitude);
-            lateVector = transform.position;
+
+//            lateVector = transform.position;
             yield return new WaitForSeconds(waitTime);
         }
     }
@@ -125,12 +130,13 @@ public class GhostAI : MonoBehaviour
     float chaseTime = 20f;
     [SerializeField]
     float scatterTime = 10f;
-    [SerializeField]
-    public static float frightenTime = 5f;
+
+    public static float frightenTime = 10f;
 
     public void SetGhostChase()
     {
         SetTarget(chaseObject);//Chase화
+        GhostAlgo = () => { GhostTargetAlgo(); };
         currentState = GhostState.Chase;//Chase화
 
         if (runningStateCoroutine != null) //억지로 바뀐경우면 runningStateCoroutine이 null이 아니다. Chase랑 Scatter은 억지로 바뀌어도 딱히 할게 없음.
@@ -146,7 +152,9 @@ public class GhostAI : MonoBehaviour
     {
         if (scatterTime > 2f) //scatter 상태가 호출 될때마다 줄어든다.
             scatterTime -= 2f;
+
         SetTarget(scatterVector);//Scatter화
+        GhostAlgo = () => { GhostTargetAlgo(); };
         currentState = GhostState.Scatter;//Scatter화
 
         if (runningStateCoroutine != null) //억지로 바뀐경우면 runningStateCoroutine이 null이 아니다. Chase랑 Scatter은 억지로 바뀌어도 딱히 할게 없음.
@@ -158,17 +166,28 @@ public class GhostAI : MonoBehaviour
             SetGhostChase();
         }));
     }
+
+    GameObject currentEffect;
+
     public void SetGhostFrighten()
     {
         SetTarget(scatterVector); //수정요함 : Frighten Vector 혹은 Frighten Target
+
+        GhostAlgo = () => { GhostRandomAlgo(); };
+
         tempState = currentState;
         currentState = GhostState.Frighten;
+
+        if (currentEffect != null)
+            Destroy(currentEffect);
+        currentEffect = Instantiate(FrightenEffect, transform);
 
         if (runningStateCoroutine != null)
             StopCoroutine(runningStateCoroutine);
 
         runningStateCoroutine = StartCoroutine(DelayAndAction(frightenTime, () =>
         {
+            Destroy(currentEffect);
             if (tempState == GhostState.Chase)
             {
                 runningStateCoroutine = null;
@@ -186,10 +205,14 @@ public class GhostAI : MonoBehaviour
         tempState = currentState;
         currentState = GhostState.Eaten;
 
+        if (currentEffect != null)
+            Destroy(currentEffect);
+        currentEffect = Instantiate(EatenEffect, transform);
+
         if (runningStateCoroutine != null)
             StopCoroutine(runningStateCoroutine);
 
-        runningStateCoroutine = StartCoroutine(DelayAndAction(frightenTime, () =>
+        runningStateCoroutine = StartCoroutine(DelayAndAction(frightenTime, () => //수정요함 : frightenTime 수정 -> 집으로 가면 Eaten풀리는거로
         {
             if (tempState == GhostState.Chase)
             {
@@ -241,9 +264,8 @@ public class GhostAI : MonoBehaviour
         _rigidbody.MoveRotation(Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime));
     }
 
-    public void GhostAlgo()
+    public void GhostTargetAlgo()
     {
-
         List<GhostSensor> tempSensors = new List<GhostSensor>();
 
         foreach (GhostSensor Sensor in Sensors)
@@ -266,9 +288,23 @@ public class GhostAI : MonoBehaviour
                     direction = Sensor;
                     tempDistance = Sensor.targetDistance;
                 }
-            Debug.DrawLine(direction.transform.position, direction.targetVector,Color.white,0.5f);
+            Debug.DrawLine(direction.transform.position, direction.targetVector, Color.white, 0.5f);
             currentDirection = direction.SensorDirection;
         }
+    }
+
+    public void GhostRandomAlgo()
+    {
+        List<GhostSensor> tempSensors = new List<GhostSensor>();
+
+        foreach (GhostSensor Sensor in Sensors)
+            if (Sensor.current != MapManager.MapObjectCategory.Wall && Sensor.SensorDirection != MoveDirection.Back)
+                tempSensors.Add(Sensor);
+
+        if (tempSensors.Count == 0)
+            currentDirection = MoveDirection.Back;
+        else
+            currentDirection = tempSensors[UnityEngine.Random.Range(0, tempSensors.Count)].SensorDirection;
     }
 
 }

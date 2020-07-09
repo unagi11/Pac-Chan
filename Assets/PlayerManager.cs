@@ -34,14 +34,12 @@ public class PlayerManager : MonoBehaviour
 
     public void GetScore()
     {
-        AudioManager.instance.PlaySEOnce(AudioManager.instance.GetCoinAudio);
-        Score++;
-        if (Score == NumOfScore)
-            SceneManager.LoadScene("GameWin");
+        GetScore(1);
     }
 
     public void GetScore(int score)
     {
+        AudioManager.instance.PlaySEOnce(AudioManager.instance.GetCoinAudio);
         Score += score;
         if (Score == NumOfScore)
             SceneManager.LoadScene("GameWin");

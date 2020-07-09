@@ -148,7 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce0cb96a0356694d8e9ee77706ddd8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GetSound: {fileID: 8300000, guid: 475f4837af487ce4a9e68bb227455e4c, type: 3}
   GetParticle: {fileID: 100006, guid: 8fc06027b01064e4f885fd8dd2929310, type: 3}
 --- !u!135 &7815514280260481758
 SphereCollider:
@@ -180,7 +179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5908257679214721167
 Transform:
   m_ObjectHideFlags: 0

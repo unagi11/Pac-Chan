@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 87649051}
   - component: {fileID: 87649050}
   - component: {fileID: 87649049}
-  m_Layer: 0
-  m_Name: uni_0
+  m_Layer: 11
+  m_Name: EnemyIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &87649051
 Transform:
   m_ObjectHideFlags: 0
@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87649048}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 5, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 44277218684070847}
   m_RootOrder: 5
@@ -50,7 +50,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 462400624e676b843b00b722d3712733, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -71,8 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3514223523984640118, guid: 15eb62b8c0b6c406abbfc0df4beffd81,
-    type: 3}
+  m_Sprite: {fileID: 297761703447499198, guid: d440a895a6c685b48b320a5fdcdffcd7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -93,7 +92,7 @@ Animator:
   m_GameObject: {fileID: 87649048}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6c25d68f463cf0e44b66b3bc99ac5b71, type: 2}
+  m_Controller: {fileID: 9100000, guid: a4937235fbb7df54d9fb052ccbb20084, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3939,8 +3938,7 @@ GameObject:
   - component: {fileID: 44277218694009117}
   - component: {fileID: 44277218694105529}
   - component: {fileID: 1899915114}
-  - component: {fileID: 1899915113}
-  - component: {fileID: 8358845749147234562}
+  - component: {fileID: 1321243091}
   m_Layer: 0
   m_Name: Yuko
   m_TagString: Enemy
@@ -3978,7 +3976,7 @@ Animator:
   m_GameObject: {fileID: 44277218683887843}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 346b04ba3952add4f9b34ca9a0dbc322, type: 3}
-  m_Controller: {fileID: 9100000, guid: c81c7daebd7695945a67dcad078847c3, type: 2}
+  m_Controller: {fileID: 9100000, guid: fb9b59085daba494da468cb126aed2c1, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -3999,13 +3997,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee92fcfe2b418245b800d38a97e8296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 0}
-  updateTime: 0.1
+  chaseObject: {fileID: 0}
+  scatterVector: {x: 18, y: 0, z: 22}
+  spawnVector: {x: 0, y: 0, z: 0}
+  updateTime: 0.01
+  updateAngle: 15
   moveSpeed: 2
   rotationSpeed: 6
+  FrightenEffect: {fileID: 7649103895337026540, guid: 662203672a1f358448b93b03e1b90d9e,
+    type: 3}
+  EatenEffect: {fileID: 1727626132299242, guid: b0bc1b6b391734647b9bb142bafc0819,
+    type: 3}
   Sensors: []
   currentDirection: 0
   currentState: 0
+  chaseTime: 20
+  scatterTime: 10
 --- !u!114 &44277218694114421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4029,7 +4036,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 44277218683887843}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e658bfc1e524494b9e54a1c92d8c1e0, type: 3}
   m_Name: 
@@ -4055,8 +4062,8 @@ MonoBehaviour:
   - {fileID: 7400000, guid: d5eb65e1cc6d6c240aeab024638a7653, type: 2}
   - {fileID: 7400000, guid: cb3828e66b00a344dac8e7595b268a2b, type: 2}
   delayWeight: 3
-  isKeepFace: 1
-  isGUI: 1
+  isKeepFace: 0
+  isGUI: 0
 --- !u!114 &44277218694118629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4190,7 +4197,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 44277218683887843}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75453f0413251fd42811d1b1eb4728c1, type: 3}
   m_Name: 
@@ -4219,7 +4226,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 3
---- !u!136 &1899915113
+--- !u!136 &1321243091
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4229,24 +4236,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
---- !u!136 &8358845749147234562
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44277218683887843}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &44277218683888001
 GameObject:
   m_ObjectHideFlags: 0
