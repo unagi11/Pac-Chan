@@ -429,8 +429,8 @@ MonoBehaviour:
   followSpeed: 4
   rotateSpeed: 5
   angle_x: 0
-  distance_x: 5
-  distance_y: 5
+  distance_x: 4
+  distance_y: 4
 --- !u!114 &310708846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,10 +443,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2221ef25fb5db348b127f19bd08288a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BgmPlayer: {fileID: 192002533}
-  SePlayer: {fileID: 887566184}
-  GetCoinAudio: {fileID: 8300000, guid: 71ccb8d2b0fe9404f8cc4f59bfaafab6, type: 3}
-  GetPowerAudio: {fileID: 8300000, guid: 96e96ab546bde47a0b8e4eef255dcf75, type: 3}
+  BGMPlayer: {fileID: 192002533}
+  SEPlayer: {fileID: 887566184}
+  NormalBGM: {fileID: 8300000, guid: cd4a9b1cbccfc48c182c4df08975b7b8, type: 3}
+  GetCoinSE: {fileID: 8300000, guid: 71ccb8d2b0fe9404f8cc4f59bfaafab6, type: 3}
+  GetPowerBGM: {fileID: 8300000, guid: 96e96ab546bde47a0b8e4eef255dcf75, type: 3}
+  GetPowerSE: {fileID: 8300000, guid: 71ccb8d2b0fe9404f8cc4f59bfaafab6, type: 3}
+  BGMTime: 0
+  PowerTime: 0
 --- !u!1 &353244762
 GameObject:
   m_ObjectHideFlags: 0
@@ -93264,6 +93268,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1899915112, guid: d15f4d1c37b9f354c8be7e47517eb31c, type: 3}
+      propertyPath: rotationSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899915112, guid: d15f4d1c37b9f354c8be7e47517eb31c, type: 3}
+      propertyPath: updateAngle
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 44277218683887843, guid: d15f4d1c37b9f354c8be7e47517eb31c,
         type: 3}
       propertyPath: m_Name
@@ -93423,6 +93435,12 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5744897054345635755, guid: cfc8259af7c20ae408b61c4b2cccccfc,
+        type: 3}
+      propertyPath: PowerEffect
+      value: 
+      objectReference: {fileID: 1844191813266838, guid: 16046f7bb3a85e346ac94da02ed2519e,
+        type: 3}
     - target: {fileID: 5744897054345635796, guid: cfc8259af7c20ae408b61c4b2cccccfc,
         type: 3}
       propertyPath: joystick

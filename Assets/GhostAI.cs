@@ -1,8 +1,6 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class GhostAI : MonoBehaviour
@@ -52,7 +50,7 @@ public class GhostAI : MonoBehaviour
 
     public MoveDirection currentDirection = MoveDirection.Stop;
     public GhostState currentState = GhostState.Chase;
-    GhostState tempState = GhostState.Chase;
+    GhostState lateState = GhostState.Chase;
 
     Vector3 direction;
     Quaternion rotation;
@@ -142,7 +140,7 @@ public class GhostAI : MonoBehaviour
         if (runningStateCoroutine != null) //억지로 바뀐경우면 runningStateCoroutine이 null이 아니다. Chase랑 Scatter은 억지로 바뀌어도 딱히 할게 없음.
             StopCoroutine(runningStateCoroutine);
 
-        runningStateCoroutine = StartCoroutine(DelayAndAction(chaseTime, () =>
+        runningStateCoroutine = StartCoroutine(Function.CoInvoke(chaseTime, () =>
         {
             runningStateCoroutine = null; // 상태가 끝까지 갔다는 표시로 Coroutine을 null로 초기화해준다.
             SetGhostScatter();
@@ -160,7 +158,7 @@ public class GhostAI : MonoBehaviour
         if (runningStateCoroutine != null) //억지로 바뀐경우면 runningStateCoroutine이 null이 아니다. Chase랑 Scatter은 억지로 바뀌어도 딱히 할게 없음.
             StopCoroutine(runningStateCoroutine);
 
-        runningStateCoroutine = StartCoroutine(DelayAndAction(scatterTime, () =>
+        runningStateCoroutine = StartCoroutine(Function.CoInvoke(scatterTime, () =>
         {
             runningStateCoroutine = null; // 상태가 끝까지 갔다는 표시로 Coroutine을 null로 초기화해준다.
             SetGhostChase();
@@ -171,11 +169,10 @@ public class GhostAI : MonoBehaviour
 
     public void SetGhostFrighten()
     {
-        SetTarget(scatterVector); //수정요함 : Frighten Vector 혹은 Frighten Target
+        if (currentState != GhostState.Frighten && currentState != GhostState.Eaten)
+            lateState = currentState;
 
         GhostAlgo = () => { GhostRandomAlgo(); };
-
-        tempState = currentState;
         currentState = GhostState.Frighten;
 
         if (currentEffect != null)
@@ -185,24 +182,27 @@ public class GhostAI : MonoBehaviour
         if (runningStateCoroutine != null)
             StopCoroutine(runningStateCoroutine);
 
-        runningStateCoroutine = StartCoroutine(DelayAndAction(frightenTime, () =>
+        runningStateCoroutine = StartCoroutine(Function.CoInvoke(frightenTime, () =>
         {
             Destroy(currentEffect);
-            if (tempState == GhostState.Chase)
+            if (lateState == GhostState.Chase)
             {
                 runningStateCoroutine = null;
                 SetGhostChase();
-            } else if (tempState == GhostState.Scatter)
+            }
+            else if (lateState == GhostState.Scatter)
             {
                 runningStateCoroutine = null;
                 SetGhostScatter();
             }
+            else
+                Debug.LogError("LateState Error!!");
         }));
     }
     public void SetGhostEaten()
     {
-        SetTarget(spawnVector);
-        tempState = currentState;
+        //        SetTarget(spawnVector);
+        //        GhostAlgo = () => { GhostTargetAlgo(); };
         currentState = GhostState.Eaten;
 
         if (currentEffect != null)
@@ -212,25 +212,19 @@ public class GhostAI : MonoBehaviour
         if (runningStateCoroutine != null)
             StopCoroutine(runningStateCoroutine);
 
-        runningStateCoroutine = StartCoroutine(DelayAndAction(frightenTime, () => //수정요함 : frightenTime 수정 -> 집으로 가면 Eaten풀리는거로
+        runningStateCoroutine = StartCoroutine(Function.CoInvoke(frightenTime, () => //수정요함 : frightenTime 수정 -> 집으로 가면 Eaten풀리는거로
         {
-            if (tempState == GhostState.Chase)
+            if (lateState == GhostState.Chase)
             {
                 runningStateCoroutine = null;
                 SetGhostChase();
             }
-            else if (tempState == GhostState.Scatter)
+            else if (lateState == GhostState.Scatter)
             {
                 runningStateCoroutine = null;
                 SetGhostScatter();
             }
         }));
-    }
-
-    public IEnumerator DelayAndAction(float time, Action func)
-    {
-        yield return new WaitForSeconds(time);
-        func.Invoke();
     }
 
     //예약
