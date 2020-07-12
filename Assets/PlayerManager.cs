@@ -8,8 +8,6 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
 
-    public GameObject PowerEffect;
-
     public int Score;
 
     [SerializeField]
@@ -18,9 +16,12 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     GameObject[] Enemys;
 
+    Effect _effect;
+
     private void Awake()
     {
         instance = this;
+        _effect = GetComponent<Effect>();
     }
 
     private void Start()
@@ -32,7 +33,13 @@ public class PlayerManager : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
-            SceneManager.LoadScene("GameOver");
+        {
+            GhostAI ghostAI = collision.gameObject.GetComponent<GhostAI>();
+            if(ghostAI.currentState == GhostAI.GhostState.Chase || ghostAI.currentState == GhostAI.GhostState.Scatter)
+                SceneManager.LoadScene("GameOver");
+            else if (ghostAI.currentState == GhostAI.GhostState.Frighten)
+                collision.gameObject.GetComponent<GhostAI>().SetGhostEaten();
+        }
     }
 
     public void GetScore()
@@ -49,16 +56,13 @@ public class PlayerManager : MonoBehaviour
     }
 
     Coroutine runningCoroutine;
-    GameObject currentEffect;
 
     public void GetPower()
     {
         AudioManager.instance.PlaySEOnce(AudioManager.instance.GetPowerSE);
         AudioManager.instance.PlayBGM(AudioManager.instance.GetPowerBGM);
 
-        if (currentEffect != null)
-            Destroy(currentEffect);
-        currentEffect = Instantiate(PowerEffect, transform);
+        _effect.StartEffect(Effect.PowerEffect);
 
         GetComponent<FaceUpdate>().OnCallChangeFace("smile");
 
@@ -68,9 +72,8 @@ public class PlayerManager : MonoBehaviour
         runningCoroutine = StartCoroutine(Function.CoInvoke(GhostAI.frightenTime, () =>
         {
             AudioManager.instance.PlayBGM(AudioManager.instance.NormalBGM);
-            Destroy(currentEffect);
+            _effect.StopEffect();
             GetComponent<FaceUpdate>().OnCallChangeFace("default");
-            Debug.LogError("10초 지남!");
         }));
 
         foreach (GameObject enemy in Enemys)

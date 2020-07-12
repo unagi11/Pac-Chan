@@ -867,7 +867,7 @@ ModelImporter:
       name: skin_mat
     second: {fileID: 2100000, guid: b87a4da61900d68429a41bed3ea42d16, type: 2}
   materials:
-    materialImportMode: 1
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

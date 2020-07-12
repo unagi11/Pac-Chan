@@ -3930,7 +3930,6 @@ GameObject:
   m_Component:
   - component: {fileID: 44277218684070847}
   - component: {fileID: 44277218693310181}
-  - component: {fileID: 1899915112}
   - component: {fileID: 44277218694114421}
   - component: {fileID: 44277218694083371}
   - component: {fileID: 44277218694118629}
@@ -3939,6 +3938,8 @@ GameObject:
   - component: {fileID: 44277218694105529}
   - component: {fileID: 1899915114}
   - component: {fileID: 1321243091}
+  - component: {fileID: 3989480802253114980}
+  - component: {fileID: 1899915112}
   m_Layer: 0
   m_Name: Yuko
   m_TagString: Enemy
@@ -3985,34 +3986,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1899915112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44277218683887843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ee92fcfe2b418245b800d38a97e8296, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chaseObject: {fileID: 0}
-  scatterVector: {x: 18, y: 0, z: 22}
-  spawnVector: {x: 0, y: 0, z: 0}
-  updateTime: 0.01
-  updateAngle: 15
-  moveSpeed: 2
-  rotationSpeed: 6
-  FrightenEffect: {fileID: 7649103895337026540, guid: 662203672a1f358448b93b03e1b90d9e,
-    type: 3}
-  EatenEffect: {fileID: 1727626132299242, guid: b0bc1b6b391734647b9bb142bafc0819,
-    type: 3}
-  Sensors: []
-  currentDirection: 0
-  currentState: 0
-  chaseTime: 20
-  scatterTime: 10
 --- !u!114 &44277218694114421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4236,10 +4209,48 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &3989480802253114980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44277218683887843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97139d629709ff04aa8c43bfbf1e2e66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runningEffect: {fileID: 0}
+--- !u!114 &1899915112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44277218683887843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee92fcfe2b418245b800d38a97e8296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseObject: {fileID: 0}
+  scatterVector: {x: 18, y: 0, z: 22}
+  spawnVector: {x: 0, y: 0, z: 0}
+  updateTime: 0.1
+  updateAngle: 10
+  moveSpeed: 2
+  rotationSpeed: 5
+  Sensors: []
+  currentDirection: 0
+  currentState: 0
+  chaseTime: 20
+  scatterTime: 10
+  eatenTime: 10
 --- !u!1 &44277218683888001
 GameObject:
   m_ObjectHideFlags: 0

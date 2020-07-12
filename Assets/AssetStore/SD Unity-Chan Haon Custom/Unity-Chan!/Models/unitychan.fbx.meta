@@ -1199,7 +1199,7 @@ ModelImporter:
       name: skin1
     second: {fileID: 2100000, guid: ca131910d5c9a634dbdd38e77111033f, type: 2}
   materials:
-    materialImportMode: 1
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

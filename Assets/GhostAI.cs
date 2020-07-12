@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody), typeof(Collider), typeof(Animator))]
+[RequireComponent(typeof(Effect))]
 public class GhostAI : MonoBehaviour
 {
     public GameObject chaseObject;
@@ -10,25 +12,11 @@ public class GhostAI : MonoBehaviour
     public Vector3 spawnVector;
 
     public float updateTime = 0.1f;
-    public float updateAngle = 5f;
+    public float updateAngle = 10f;
     public float moveSpeed = 2f;
-    public float rotationSpeed = 6f;
+    public float rotationSpeed = 5f;
 
-    public GameObject FrightenEffect;
-    public GameObject EatenEffect;
-
-    public GhostSensor [] Sensors;
-
-    /* 0 - front
-     * 1 - left
-     * 2 - back
-     * 3 - right
-     */
-
-    /* Level 1 : 7, 20, 7, 20, 5, 20, 5, 무한
-     * Level 2 ~ : 7, 20, 7, 20, 5, 무한
-     * 
-     */
+    public GhostSensor[] Sensors;
 
     public enum MoveDirection
     {
@@ -41,11 +29,17 @@ public class GhostAI : MonoBehaviour
     }
 
     Rigidbody _rigidbody;
+    Collider _collider;
+    Animator _animator;
+    Effect _effect;
 
     private void Awake()
     {
         Sensors = GetComponentsInChildren<GhostSensor>();
         _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
+        _animator = GetComponent<Animator>();
+        _effect = GetComponent<Effect>();
     }
 
     public MoveDirection currentDirection = MoveDirection.Stop;
@@ -90,34 +84,11 @@ public class GhostAI : MonoBehaviour
 
     IEnumerator WaitAndUpdate(float waitTime)
     {
-//        Vector3 temp = transform.position;//판단할때마다 갱신
-//        Vector3 lateVector = transform.position;//waitTime마다 갱신
         while (true)
         {
-//            Debug.Log(Quaternion.Angle(rotation, transform.rotation));
             if (Quaternion.Angle(rotation, transform.rotation) < updateAngle) // 회전중이 아닐때만 판단
-//            {
                 GhostAlgo.Invoke();
-//                temp = transform.position;
-//            }
-            
-            /*if ((transform.position - temp).magnitude > 0.5) // 한칸 움직였을 경우 판단
-            {
-                Debug.LogError("GhostAlgo1");
 
-                GhostAlgo();
-                temp = transform.position;
-            }
-            else if ((lateVector - transform.position).magnitude < 0.1) // 벽에 박을때마다 판단 (정지 상태에 가까운 경우)
-            {
-                Debug.LogError("GhostAlgo2");
-                GhostAlgo();
-                temp = transform.position;
-            }*/
-
-            //Debug.LogError((lateVector - transform.position).magnitude);
-
-//            lateVector = transform.position;
             yield return new WaitForSeconds(waitTime);
         }
     }
@@ -128,18 +99,20 @@ public class GhostAI : MonoBehaviour
     float chaseTime = 20f;
     [SerializeField]
     float scatterTime = 10f;
-
+    [SerializeField]
     public static float frightenTime = 10f;
+    [SerializeField]
+    float eatenTime = 10f;
 
     public void SetGhostChase()
     {
         SetTarget(chaseObject);//Chase화
         GhostAlgo = () => { GhostTargetAlgo(); };
         currentState = GhostState.Chase;//Chase화
+        _effect.StopEffect();
 
         if (runningStateCoroutine != null) //억지로 바뀐경우면 runningStateCoroutine이 null이 아니다. Chase랑 Scatter은 억지로 바뀌어도 딱히 할게 없음.
             StopCoroutine(runningStateCoroutine);
-
         runningStateCoroutine = StartCoroutine(Function.CoInvoke(chaseTime, () =>
         {
             runningStateCoroutine = null; // 상태가 끝까지 갔다는 표시로 Coroutine을 null로 초기화해준다.
@@ -154,10 +127,10 @@ public class GhostAI : MonoBehaviour
         SetTarget(scatterVector);//Scatter화
         GhostAlgo = () => { GhostTargetAlgo(); };
         currentState = GhostState.Scatter;//Scatter화
+        _effect.StopEffect();
 
         if (runningStateCoroutine != null) //억지로 바뀐경우면 runningStateCoroutine이 null이 아니다. Chase랑 Scatter은 억지로 바뀌어도 딱히 할게 없음.
             StopCoroutine(runningStateCoroutine);
-
         runningStateCoroutine = StartCoroutine(Function.CoInvoke(scatterTime, () =>
         {
             runningStateCoroutine = null; // 상태가 끝까지 갔다는 표시로 Coroutine을 null로 초기화해준다.
@@ -165,26 +138,58 @@ public class GhostAI : MonoBehaviour
         }));
     }
 
-    GameObject currentEffect;
-
     public void SetGhostFrighten()
     {
-        if (currentState != GhostState.Frighten && currentState != GhostState.Eaten)
+        if (currentState == GhostState.Eaten) // Eaten상태였을때는 Frighten되지 않습니다. 
+            return;
+        else if (currentState == GhostState.Chase || currentState == GhostState.Scatter) // Chase상태 혹은 Scatter상태였더라면 이전 상태를 기억합니다.
             lateState = currentState;
 
-        GhostAlgo = () => { GhostRandomAlgo(); };
-        currentState = GhostState.Frighten;
+//        Debug.LogError(name + " : SetGhostFrighten");
 
-        if (currentEffect != null)
-            Destroy(currentEffect);
-        currentEffect = Instantiate(FrightenEffect, transform);
+        GhostAlgo = () => { GhostRandomAlgo(); }; //행동 패턴을 랜덤 알고리즘으로 바꿉니다.
+        currentState = GhostState.Frighten;
+        _effect.StartEffect(Effect.FrightenEffect); //FrightenEffect를 생성합니다.
 
         if (runningStateCoroutine != null)
             StopCoroutine(runningStateCoroutine);
-
         runningStateCoroutine = StartCoroutine(Function.CoInvoke(frightenTime, () =>
         {
-            Destroy(currentEffect);
+            _effect.StopEffect();
+            if (lateState == GhostState.Chase) //이전 상태로 돌아간다.
+            {
+                runningStateCoroutine = null;
+                SetGhostChase();
+            }
+            else if (lateState == GhostState.Scatter)
+            {
+                runningStateCoroutine = null;
+                SetGhostScatter();
+            }
+            else
+                Debug.LogError("LateState Error!!");
+        }));
+    }
+
+    public void SetGhostEaten()
+    {
+        _collider.isTrigger = true;
+        _rigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+        GhostAlgo = () => { };
+        currentState = GhostState.Eaten;
+        _effect.StartEffect(Effect.EatenEffect);
+        _animator.SetBool("isDizzy", true);
+
+        if (runningStateCoroutine != null)
+            StopCoroutine(runningStateCoroutine); //Frighten Coroutine 제거해야함
+        runningStateCoroutine = StartCoroutine(Function.CoInvoke(eatenTime, () => 
+        {
+            _collider.isTrigger = false;
+            _rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
+            transform.position = spawnVector;
+            _effect.StopEffect();
+            _animator.SetBool("isDizzy", false);
+
             if (lateState == GhostState.Chase)
             {
                 runningStateCoroutine = null;
@@ -199,37 +204,6 @@ public class GhostAI : MonoBehaviour
                 Debug.LogError("LateState Error!!");
         }));
     }
-    public void SetGhostEaten()
-    {
-        //        SetTarget(spawnVector);
-        //        GhostAlgo = () => { GhostTargetAlgo(); };
-        currentState = GhostState.Eaten;
-
-        if (currentEffect != null)
-            Destroy(currentEffect);
-        currentEffect = Instantiate(EatenEffect, transform);
-
-        if (runningStateCoroutine != null)
-            StopCoroutine(runningStateCoroutine);
-
-        runningStateCoroutine = StartCoroutine(Function.CoInvoke(frightenTime, () => //수정요함 : frightenTime 수정 -> 집으로 가면 Eaten풀리는거로
-        {
-            if (lateState == GhostState.Chase)
-            {
-                runningStateCoroutine = null;
-                SetGhostChase();
-            }
-            else if (lateState == GhostState.Scatter)
-            {
-                runningStateCoroutine = null;
-                SetGhostScatter();
-            }
-        }));
-    }
-
-    //예약
-    //영구
-    //수정
 
     public void GhostMove()
     {

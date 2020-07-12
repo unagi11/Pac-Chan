@@ -15,7 +15,8 @@ public class MapManager : MonoBehaviour
         Coin = 2,
         Power = 3,
         Portal = 4,
-        Player = 5
+        Player = 5,
+        Enemy = 6
     };
 
     /* 0 : null
@@ -43,8 +44,8 @@ public class MapManager : MonoBehaviour
         {1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1 }, // 6
         {1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1 }, // 7
         {1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 1, 1, 1 }, // 8
-        {1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1 }, // 9
-        {1, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 1 }, // 10
+        {1, 1, 1, 1, 2, 1, 2, 1, 1, 0, 1, 1, 2, 1, 2, 1, 1, 1, 1 }, // 9
+        {1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 1 }, // 10
         {1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1 }, // 11
         {1, 1, 1, 1, 2, 1, 2, 2, 2, 5, 2, 2, 2, 1, 2, 1, 1, 1, 1 }, // 12
         {1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1 }, // 13
@@ -81,9 +82,9 @@ public class MapManager : MonoBehaviour
                     case 5:
                         GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(x, 0, currentMap.GetLength(0) - y);
                         break;
-                    case 6:
-                        GameObject.FindGameObjectWithTag("Enemy").transform.position = new Vector3(x, 0, currentMap.GetLength(0) - y);
-                        break;
+//                    case 6:
+//                        GameObject.FindGameObjectWithTag("Enemy").transform.position = new Vector3(x, 0, currentMap.GetLength(0) - y);
+//                        break;
                     default:
                         Instantiate(MapObject[currentMap[y, x]], new Vector3(x, MapObject[currentMap[y, x]].transform.position.y, currentMap.GetLength(0) - y), MapObject[currentMap[y, x]].transform.rotation, transform);
                         break;
