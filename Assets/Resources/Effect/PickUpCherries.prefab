@@ -4962,7 +4962,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.4627451, b: 0.4627451, a: 0.5019608}
+      maxColor: {r: 1, g: 0.4627451, b: 0.4627451, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0.4392157, b: 0.4392157, a: 0.5019608}
@@ -14443,7 +14443,7 @@ GameObject:
   - component: {fileID: 8129711929292548084}
   - component: {fileID: 8866142091682874726}
   m_Layer: 0
-  m_Name: CFX2_PickupHeart 1
+  m_Name: PickUpCherries
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14457,7 +14457,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8130640826358724771}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1098325599217150632}
@@ -14620,7 +14620,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.52156866, b: 0.52156866, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
