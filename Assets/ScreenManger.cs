@@ -9,25 +9,29 @@ public class ScreenManger : MonoBehaviour
 {
     public RectTransform ScreenMaskRect;
 
+    public float scaleheight;
+
+    public int width = 16;
+    public int height = 9;
+
     private void Awake()
     {
-
         CanvasScaler canvasScaler = GetComponent<CanvasScaler>();
 
-        Camera camera = Camera.main;
+//        Camera camera = Camera.main;
 //        Rect rect = camera.rect;
 
-        float scaleheight = ((float)Screen.width / Screen.height) / ((float)16 / 9);
+        scaleheight = ((float)Screen.width / Screen.height) / ((float)width / height);
 //        float scalewidth = 1f / scaleheight;
 
-        if (scaleheight < 1)
+        if (scaleheight < 1) // 화면의 비율에서 세로가 길다
         {
 //            rect.height = scaleheight;
 //            rect.y = (1f - scaleheight) / 2f;
 
             canvasScaler.matchWidthOrHeight = 0f;
         }
-        else
+        else // 화면의 비율에서 가로가 길다
         {
 //            rect.width = scalewidth;
 //            rect.x = (1f - scalewidth) / 2f;

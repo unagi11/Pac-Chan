@@ -1,56 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CameraJoystick : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
 {
-    public float Vertical = 0;
-    public float Horizontal = 0;
+    public Vector2 deltaMove;
+    public Vector2 move;
 
-    public float angle_v = 0;
+    [SerializeField, Range(180f, 360f)]
+    float rotationSpeed = 270f; // 90 per second
 
-    float angleLimit = 360f;
+    float screenWidth = Screen.width;
+    float screenHeight = Screen.height;
 
-    [SerializeField]
-    float angleSpeedDown = 10f;
-
-    [SerializeField]
-    float angleSpeedLimit = 5f;
-
-    Vector2 first = Vector3.zero;
-
-    Vector2 temp;
+    Vector2 tempMove = Vector2.zero;
 
     public void OnDrag(PointerEventData eventData)
     {
-        Horizontal = (temp.x - eventData.position.x) / angleSpeedDown;
-        Vertical = (eventData.position.y - first.y) / angleSpeedDown;
+        deltaMove.x = (eventData.position.x - tempMove.x) * rotationSpeed / screenWidth;
+        deltaMove.y = (eventData.position.y - tempMove.y) * rotationSpeed / screenHeight;
 
-        if (Mathf.Abs(Horizontal) > angleSpeedLimit)
-            Horizontal = angleSpeedLimit * (Horizontal/Mathf.Abs(Horizontal));
-
-        angle_v += Horizontal;
-        temp = eventData.position;
-   
-        if (angle_v < 0)
-        {
-            angle_v %= angleLimit;
-            angle_v += angleLimit;
-        }
-        else if (angle_v > 360)
-            angle_v %= angleLimit;
-
+        tempMove = eventData.position;
+        move += deltaMove;
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        temp = eventData.position;
+        tempMove = eventData.position;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Vertical = 0;
-        first = Vector2.zero;
+        deltaMove = Vector2.zero;
     }
 }

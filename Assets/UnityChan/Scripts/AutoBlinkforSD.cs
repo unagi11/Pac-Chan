@@ -34,7 +34,7 @@ namespace UnityChan
 
 
 
-		public enum Status
+		enum Status
 		{
 			Close,
 			HalfClose,
@@ -42,7 +42,7 @@ namespace UnityChan
 		}
 
 
-		public Status eyeStatus;	//現在の目パチステータス
+		private Status eyeStatus;	//現在の目パチステータス
 
 		void Awake ()
 		{

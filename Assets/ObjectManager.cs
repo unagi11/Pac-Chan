@@ -6,17 +6,17 @@ public class ObjectManager : MonoBehaviour
 {
     public GameObject GetParticle;
 
-    Camera main;
+    Transform cameraTransform;
 
     private void Start()
     {
-        main = Camera.main;
+        cameraTransform = Camera.main.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = Quaternion.LookRotation(main.transform.forward);
+        transform.rotation = Quaternion.LookRotation(cameraTransform.forward);
     }
 
     private void OnTriggerEnter(Collider other)

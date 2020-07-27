@@ -80,7 +80,8 @@ public class MapManager : MonoBehaviour
                     case 0:
                         continue;
                     case 5:
-                        GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(x, 0, currentMap.GetLength(0) - y);
+                        if (GameObject.FindGameObjectWithTag("Player") != null)
+                            GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(x, 0, currentMap.GetLength(0) - y);
                         break;
 //                    case 6:
 //                        GameObject.FindGameObjectWithTag("Enemy").transform.position = new Vector3(x, 0, currentMap.GetLength(0) - y);

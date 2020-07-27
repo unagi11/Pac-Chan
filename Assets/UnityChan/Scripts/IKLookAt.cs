@@ -27,6 +27,9 @@ namespace UnityChan
         public bool isGUI = true;
 
 
+
+
+
 		// Use this for initialization
 		void Start () {
             avator = GetComponent<Animator>();
@@ -40,6 +43,7 @@ namespace UnityChan
 
 		void OnGUI()
 		{
+
             if (isGUI)
             {
                 Rect rect1 = new Rect(Screen.width - 120, Screen.height - 40, 100, 30);
@@ -58,7 +62,7 @@ namespace UnityChan
                     avator.SetLookAtWeight(lookAtWeight,bodyWeight,headWeight,eyesWeight,clampWeight);
                     if (lookAtObj != null)
                     {
- //                       target.enabled = true;
+//                        target.enabled = true;
                         avator.SetLookAtPosition(lookAtObj.position);
                     }
                     else

@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Runtime.Versioning;
 
 namespace TMPro.Examples
 {
-    
+
     public class TMP_UiFrameRateCounter : MonoBehaviour
     {
         public float UpdateInterval = 5.0f;
         private float m_LastInterval = 0;
         private int m_Frames = 0;
+
+        [SerializeField]
+        private int TargetFrame = 60;
 
         public enum FpsCounterAnchorPositions { TopLeft, BottomLeft, TopRight, BottomRight };
 
@@ -28,7 +31,7 @@ namespace TMPro.Examples
             if (!enabled)
                 return;
 
-            Application.targetFrameRate = 1000;
+            Application.targetFrameRate = TargetFrame;
 
             GameObject frameCounter = new GameObject("Frame Counter");
             m_frameCounter_transform = frameCounter.AddComponent<RectTransform>();

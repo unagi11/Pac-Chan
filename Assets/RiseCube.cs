@@ -5,19 +5,18 @@ using UnityEngine;
 public class RiseCube : MonoBehaviour
 {
     public float noise;
-    public float refinement = 0.1f;
-    public float SpeedMultiflier = 10f;
+    float refinement = 0.1f;
 
-    public float Minimum = 0.5f;
-    public float UpMultiflier = 0.4f;
+    [SerializeField, Range(-10, 10)]
+    float minimum_y = 1, maximum_y = 2;
 
     private void Start()
     {
-        noise = Mathf.PerlinNoise(transform.position.x * refinement, transform.position.z * refinement);
+        noise = Mathf.PerlinNoise(transform.position.x * refinement, transform.position.z * refinement) * 10;
     }
 
     private void Update()
     {
-        transform.position = new Vector3(transform.position.x, Mathf.Abs(Mathf.Sin(Time.time + noise * SpeedMultiflier)) * UpMultiflier + Minimum, transform.position.z);
+        transform.position = new Vector3(transform.position.x, minimum_y + (maximum_y - minimum_y) / 2 + (maximum_y - minimum_y) / 2  * Mathf.Sin(Time.time + noise), transform.position.z);
     }
 }

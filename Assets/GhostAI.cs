@@ -7,8 +7,8 @@ using UnityEngine;
 [RequireComponent(typeof(Effect))]
 public class GhostAI : MonoBehaviour
 {
-    public GameObject chaseObject;
-    public Vector3 scatterVector;
+    public Transform chaseTransform;
+    public Transform scatterTransform;
     public Vector3 spawnVector;
 
     public float updateTime = 0.1f;
@@ -57,20 +57,20 @@ public class GhostAI : MonoBehaviour
         rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0).normalized;
         spawnVector = transform.position;
 
-        SetGhostChase();
+        SetGhostScatter();
     }
 
-    public void SetTarget(GameObject _targetObject) //Object 우선한다.
+    public void SetTarget(Transform _targetTransfrom) //Object 우선한다.
     {
         foreach (GhostSensor Sensor in Sensors)
-            Sensor.targetObject = _targetObject;
+            Sensor.targetTransform = _targetTransfrom;
     }
 
     public void SetTarget(Vector3 targetVector)
     {
         foreach (GhostSensor Sensor in Sensors)
         {
-            Sensor.targetObject = null;
+            Sensor.targetTransform = null;
             Sensor.targetVector = targetVector;
         }
     }
@@ -102,11 +102,11 @@ public class GhostAI : MonoBehaviour
     [SerializeField]
     public static float frightenTime = 10f;
     [SerializeField]
-    float eatenTime = 10f;
+    float eatenTime = 7f;
 
     public void SetGhostChase()
     {
-        SetTarget(chaseObject);//Chase화
+        SetTarget(chaseTransform);//Chase화
         GhostAlgo = () => { GhostTargetAlgo(); };
         currentState = GhostState.Chase;//Chase화
         _effect.StopEffect();
@@ -124,7 +124,7 @@ public class GhostAI : MonoBehaviour
         if (scatterTime > 2f) //scatter 상태가 호출 될때마다 줄어든다.
             scatterTime -= 2f;
 
-        SetTarget(scatterVector);//Scatter화
+        SetTarget(scatterTransform);//Scatter화
         GhostAlgo = () => { GhostTargetAlgo(); };
         currentState = GhostState.Scatter;//Scatter화
         _effect.StopEffect();
@@ -237,7 +237,7 @@ public class GhostAI : MonoBehaviour
         List<GhostSensor> tempSensors = new List<GhostSensor>();
 
         foreach (GhostSensor Sensor in Sensors)
-            if (Sensor.current != MapManager.MapObjectCategory.Wall && Sensor.SensorDirection != MoveDirection.Back)
+            if (Sensor.current != MapManager.MapObjectCategory.Wall && Sensor.current != MapManager.MapObjectCategory.Enemy && Sensor.SensorDirection != MoveDirection.Back)
                 tempSensors.Add(Sensor);
 
         if (tempSensors.Count == 0)

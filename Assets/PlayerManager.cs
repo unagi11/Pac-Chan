@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityChan;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
+
+    public TextMeshProUGUI LeftCoinUI;
 
     public int Score;
 
@@ -28,6 +33,7 @@ public class PlayerManager : MonoBehaviour
     {
         Enemys = GameObject.FindGameObjectsWithTag("Enemy");
         NumOfScore = GameObject.FindGameObjectsWithTag("Score").Length;
+        UpdateUI();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -47,10 +53,16 @@ public class PlayerManager : MonoBehaviour
         GetScore(1);
     }
 
+    public void UpdateUI()
+    {
+        LeftCoinUI.text = "<sprite=\"Cherry_one\" index=0> " + Score + " / " + NumOfScore;
+    }
+
     public void GetScore(int score)
     {
         AudioManager.instance.PlaySEOnce(AudioManager.instance.GetCoinSE);
         Score += score;
+        UpdateUI();
         if (Score == NumOfScore)
             SceneManager.LoadScene("GameWin");
     }

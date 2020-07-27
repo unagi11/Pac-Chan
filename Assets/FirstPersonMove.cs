@@ -41,7 +41,6 @@ public class FirstPersonMove : MonoBehaviour
 
         CameraMoveFunc(ver, joy_ver, hor, joy_hor);
     }
-
     
     void CameraMoveFunc(float ver, float hor)
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GhostSensor : MonoBehaviour
 {
-    public GameObject targetObject;
+    public Transform targetTransform;
     public Vector3 targetVector;
     public float targetDistance;
 
@@ -13,8 +13,8 @@ public class GhostSensor : MonoBehaviour
 
     private void Update()
     {
-        if (targetObject != null)
-            targetVector = targetObject.transform.position;
+        if (targetTransform != null)
+            targetVector = targetTransform.transform.position;
         
         targetDistance = (transform.position - targetVector).magnitude;
         //Debug.DrawLine(transform.position, targetVector);
@@ -25,6 +25,10 @@ public class GhostSensor : MonoBehaviour
         if (other.CompareTag("Wall"))
         {
             current = MapManager.MapObjectCategory.Wall;
+        }
+        else if (other.CompareTag("Enemy"))
+        {
+            current = MapManager.MapObjectCategory.Enemy;
         }
     }
 
