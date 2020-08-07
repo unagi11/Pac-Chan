@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityChan;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -11,29 +9,52 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
 
-    public TextMeshProUGUI LeftCoinUI;
+    public TextMeshProUGUI ScoreUI;
+    public TextMeshProUGUI CoinUI;
+    public TextMeshProUGUI ComboUI;
+    public Scrollbar comboBar;
+    public Image fill;
+    public Gradient barGradient;
 
-    public int Score;
+    public int MyScore = 0;
+    public int MyCoins = 0;
+    public int MyCombo = 0;
 
-    [SerializeField]
-    int NumOfScore;
+    int NumOfAllCoins;
 
     [SerializeField]
     GameObject[] Enemys;
 
     Effect _effect;
 
+    [SerializeField, Range(0, 1)]
+    public static float ComboMeter = 0;
+
+    [SerializeField]
+    float ComboDelayTime = 2f;
+
+    public enum PlayerState
+    { 
+        Normal, Power, DIe
+    }
+
+    public static PlayerState currentState = PlayerState.Normal;
+
+    Camera _camera;
+
     private void Awake()
     {
         instance = this;
         _effect = GetComponent<Effect>();
+        _camera = Camera.main;
     }
 
     private void Start()
     {
         Enemys = GameObject.FindGameObjectsWithTag("Enemy");
-        NumOfScore = GameObject.FindGameObjectsWithTag("Score").Length;
+        NumOfAllCoins = GameObject.FindGameObjectsWithTag("Coin").Length;
         UpdateUI();
+        StartCoroutine(ComboCoroutine());
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -42,29 +63,45 @@ public class PlayerManager : MonoBehaviour
         {
             GhostAI ghostAI = collision.gameObject.GetComponent<GhostAI>();
             if(ghostAI.currentState == GhostAI.GhostState.Chase || ghostAI.currentState == GhostAI.GhostState.Scatter)
+            {
                 SceneManager.LoadScene("GameOver");
+                MyCombo = 0;
+                ComboMeter = 0;
+                StopAllCoroutines();
+            }
             else if (ghostAI.currentState == GhostAI.GhostState.Frighten)
+            {
                 collision.gameObject.GetComponent<GhostAI>().SetGhostEaten();
+                GetCombo();
+            }
         }
-    }
-
-    public void GetScore()
-    {
-        GetScore(1);
     }
 
     public void UpdateUI()
     {
-        LeftCoinUI.text = "<sprite=\"Cherry_one\" index=0> " + Score + " / " + NumOfScore;
+        ScoreUI.text = "Score " + MyScore;
+        CoinUI.text = "<sprite=\"Cherry_one\" index=0> " + MyCoins + " / " + NumOfAllCoins;
     }
 
-    public void GetScore(int score)
+    public void GetCoin()
     {
         AudioManager.instance.PlaySEOnce(AudioManager.instance.GetCoinSE);
-        Score += score;
+        CoinUI.GetComponent<Animator>().SetTrigger("getCoin");
+        MyCoins += 1;
+        MyScore += 100 + 10 * MyCombo;
+
+        GetCombo();
+
         UpdateUI();
-        if (Score == NumOfScore)
+        if (MyCoins == NumOfAllCoins)
             SceneManager.LoadScene("GameWin");
+    }
+
+    public void GetCombo()
+    {
+        ComboUI.GetComponent<Animator>().SetTrigger("getCombo");
+        MyCombo += 1;
+        ComboMeter = 1f;
     }
 
     Coroutine runningCoroutine;
@@ -78,6 +115,8 @@ public class PlayerManager : MonoBehaviour
 
         GetComponent<FaceUpdate>().OnCallChangeFace("smile");
 
+        currentState = PlayerState.Power;
+
         if (runningCoroutine != null)
             StopCoroutine(runningCoroutine);
 
@@ -86,9 +125,36 @@ public class PlayerManager : MonoBehaviour
             AudioManager.instance.PlayBGM(AudioManager.instance.NormalBGM);
             _effect.StopEffect();
             GetComponent<FaceUpdate>().OnCallChangeFace("default");
+
+            currentState = PlayerState.Normal;
         }));
 
         foreach (GameObject enemy in Enemys)
             enemy.GetComponent<GhostAI>().SetGhostFrighten();
+    }
+    IEnumerator ComboCoroutine()
+    {
+        while (true)
+        {
+            if (ComboMeter <= 0f)
+            {
+                MyCombo = 0;
+                ComboMeter = 0f;
+            }
+            else
+                ComboMeter -= Time.deltaTime / ComboDelayTime;
+
+            comboBar.size = ComboMeter;
+            ComboUI.text = MyCombo + " Combo";
+
+            Color color = barGradient.Evaluate(((MyCombo - 1) + ComboMeter)/100);
+
+            ComboUI.color = color;
+            fill.color = color;
+            CoinUI.color = color;
+            ScoreUI.color = color;
+
+            yield return null;
+        }
     }
 }

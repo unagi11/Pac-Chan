@@ -23,9 +23,9 @@ public class ObjectManager : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (CompareTag("Score"))
+            if (CompareTag("Coin"))
             {
-                PlayerManager.instance.GetScore();
+                PlayerManager.instance.GetCoin();
             }
             else if (CompareTag("Power"))
             {

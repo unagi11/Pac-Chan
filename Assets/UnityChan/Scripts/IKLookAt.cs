@@ -14,7 +14,7 @@ namespace UnityChan
 	public class IKLookAt : MonoBehaviour {
 
         private Animator avator;
-        private MeshRenderer target = null;
+        //private MeshRenderer target = null;
 		
 		public bool ikActive = false;
 		public Transform lookAtObj = null;
@@ -27,16 +27,13 @@ namespace UnityChan
         public bool isGUI = true;
 
 
-
-
-
 		// Use this for initialization
 		void Start () {
             avator = GetComponent<Animator>();
             if (lookAtObj != null)
             {
-                target = lookAtObj.GetComponentInParent<MeshRenderer>();
-//                target.enabled = false;
+                //target = lookAtObj.GetComponentInParent<MeshRenderer>();
+                //target.enabled = false;
             }
             
 		}
@@ -62,7 +59,7 @@ namespace UnityChan
                     avator.SetLookAtWeight(lookAtWeight,bodyWeight,headWeight,eyesWeight,clampWeight);
                     if (lookAtObj != null)
                     {
-//                        target.enabled = true;
+                        //target.enabled = true;
                         avator.SetLookAtPosition(lookAtObj.position);
                     }
                     else
@@ -85,7 +82,7 @@ namespace UnityChan
 				{
                     if (lookAtObj != null)
 					{
-                        target.enabled = false;
+                        //target.enabled = false;
                         //Targetを消した位置に再び出したい場合には、下の行をコメントアウトする.
                         //lookAtObj.position = avator.bodyPosition + avator.bodyRotation * new Vector3(0,0.5f,1);
 					}				

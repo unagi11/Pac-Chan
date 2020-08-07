@@ -10,7 +10,7 @@ TagManager:
   - Portal
   - FxTemporaire
   - Power
-  - Score
+  - Coin
   layers:
   - Default
   - TransparentFX

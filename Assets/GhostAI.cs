@@ -266,7 +266,7 @@ public class GhostAI : MonoBehaviour
         List<GhostSensor> tempSensors = new List<GhostSensor>();
 
         foreach (GhostSensor Sensor in Sensors)
-            if (Sensor.current != MapManager.MapObjectCategory.Wall && Sensor.SensorDirection != MoveDirection.Back)
+            if (Sensor.current != MapManager.MapObjectCategory.Wall && Sensor.current != MapManager.MapObjectCategory.Enemy && Sensor.SensorDirection != MoveDirection.Back)
                 tempSensors.Add(Sensor);
 
         if (tempSensors.Count == 0)
