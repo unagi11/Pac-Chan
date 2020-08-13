@@ -64,10 +64,11 @@ public class PlayerManager : MonoBehaviour
             GhostAI ghostAI = collision.gameObject.GetComponent<GhostAI>();
             if(ghostAI.currentState == GhostAI.GhostState.Chase || ghostAI.currentState == GhostAI.GhostState.Scatter)
             {
-                SceneManager.LoadScene("GameOver");
+                GoogleManager.AddLeaderboard(MyScore);
                 MyCombo = 0;
                 ComboMeter = 0;
                 StopAllCoroutines();
+                SceneManager.LoadScene("GameOver");
             }
             else if (ghostAI.currentState == GhostAI.GhostState.Frighten)
             {

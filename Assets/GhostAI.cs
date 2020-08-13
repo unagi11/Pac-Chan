@@ -46,8 +46,8 @@ public class GhostAI : MonoBehaviour
     public GhostState currentState = GhostState.Chase;
     GhostState lateState = GhostState.Chase;
 
-    Vector3 direction;
-    Quaternion rotation;
+    public Vector3 direction;
+    public Quaternion rotation;
 
     void Start()
     {
@@ -89,6 +89,7 @@ public class GhostAI : MonoBehaviour
             if (Quaternion.Angle(rotation, transform.rotation) < updateAngle) // 회전중이 아닐때만 판단
                 GhostAlgo.Invoke();
 
+            //yield return null;
             yield return new WaitForSeconds(waitTime);
         }
     }
@@ -227,6 +228,11 @@ public class GhostAI : MonoBehaviour
             rotation = Quaternion.Euler(0, rotation.eulerAngles.y + 180, 0).normalized;
             currentDirection = MoveDirection.Front;
         }
+
+        //transform.position += direction * moveSpeed * Time.deltaTime;
+        //transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+
+//        Debug.LogError("Move?");
 
         _rigidbody.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
         _rigidbody.MoveRotation(Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime));

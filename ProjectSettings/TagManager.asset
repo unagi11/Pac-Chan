@@ -8,7 +8,6 @@ TagManager:
   - Wall
   - Enemy
   - Portal
-  - FxTemporaire
   - Power
   - Coin
   layers:
@@ -20,9 +19,9 @@ TagManager:
   - UI
   - 
   - 
-  - Ground
-  - Player
   - YuME_TileMap
+  - Player
+  - 
   - Minimap
   - 
   - 

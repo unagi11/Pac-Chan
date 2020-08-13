@@ -59,7 +59,7 @@ public class FirstPersonMove : MonoBehaviour
         if (hor < 0)
             angle = -angle;
 
-         _rigidbody.MoveRotation( Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, angle + _camera.transform.rotation.eulerAngles.y, 0), Time.deltaTime * rotateSpeed));
+        _rigidbody.MoveRotation(Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, angle + _camera.transform.rotation.eulerAngles.y, 0), Time.deltaTime * rotateSpeed));
 
 //        Debug.LogError(Mathf.Acos(ver / Mathf.Sqrt(ver * ver + hor * hor))/Mathf.PI * 180);
 

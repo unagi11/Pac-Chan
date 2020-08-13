@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
+    [SerializeField]
+    bool enable = true;
 
     public static MapManager instance;
 
@@ -87,7 +89,8 @@ public class MapManager : MonoBehaviour
 //                        GameObject.FindGameObjectWithTag("Enemy").transform.position = new Vector3(x, 0, currentMap.GetLength(0) - y);
 //                        break;
                     default:
-                        Instantiate(MapObject[currentMap[y, x]], new Vector3(x, MapObject[currentMap[y, x]].transform.position.y, currentMap.GetLength(0) - y), MapObject[currentMap[y, x]].transform.rotation, transform);
+                        if (enable)
+                            Instantiate(MapObject[currentMap[y, x]], new Vector3(x, MapObject[currentMap[y, x]].transform.position.y, currentMap.GetLength(0) - y), MapObject[currentMap[y, x]].transform.rotation, transform);
                         break;
                 }
             }

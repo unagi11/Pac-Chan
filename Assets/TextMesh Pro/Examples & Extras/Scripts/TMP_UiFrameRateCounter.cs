@@ -7,6 +7,7 @@ namespace TMPro.Examples
 
     public class TMP_UiFrameRateCounter : MonoBehaviour
     {
+        public bool isGUI = false;
         public float UpdateInterval = 5.0f;
         private float m_LastInterval = 0;
         private int m_Frames = 0;
@@ -32,6 +33,9 @@ namespace TMPro.Examples
                 return;
 
             Application.targetFrameRate = TargetFrame;
+
+            if (!isGUI)
+                return;
 
             GameObject frameCounter = new GameObject("Frame Counter");
             m_frameCounter_transform = frameCounter.AddComponent<RectTransform>();
@@ -82,7 +86,8 @@ namespace TMPro.Examples
                 else
                     htmlColorTag = "<color=green>";
 
-                m_TextMeshPro.SetText(htmlColorTag + fpsLabel, fps, ms);
+                if (isGUI)
+                    m_TextMeshPro.SetText(htmlColorTag + fpsLabel, fps, ms);
 
                 m_Frames = 0;
                 m_LastInterval = timeNow;
@@ -92,6 +97,9 @@ namespace TMPro.Examples
 
         void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position)
         {
+            if (!isGUI)
+                return;
+
             switch (anchor_position)
             {
                 case FpsCounterAnchorPositions.TopLeft:
