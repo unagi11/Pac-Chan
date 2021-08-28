@@ -23,9 +23,9 @@ public class GoogleManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        PlayGamesPlatform.InitializeInstance(new PlayGamesClientConfiguration.Builder().Build());
-        PlayGamesPlatform.DebugLogEnabled = true;
-        PlayGamesPlatform.Activate();
+        // PlayGamesPlatform.InitializeInstance(new PlayGamesClientConfiguration.Builder().Build());
+        // PlayGamesPlatform.DebugLogEnabled = true;
+        // PlayGamesPlatform.Activate();
         Login();
     }
 
@@ -60,7 +60,7 @@ public class GoogleManager : MonoBehaviour
 
     public void Logout()
     {
-        ((PlayGamesPlatform)Social.Active).SignOut();
+        // ((PlayGamesPlatform)Social.Active).SignOut();
         LoginText?.SetText("Login Failed\nName : Guest");
     }
 
