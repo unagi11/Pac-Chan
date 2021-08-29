@@ -54,7 +54,6 @@ public class PlayerManager : MonoBehaviour
         Enemys = GameObject.FindGameObjectsWithTag("Enemy");
         NumOfAllCoins = GameObject.FindGameObjectsWithTag("Coin").Length;
         UpdateUI();
-        StartCoroutine(ComboCoroutine());
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -73,7 +72,9 @@ public class PlayerManager : MonoBehaviour
             else if (ghostAI.currentState == GhostAI.GhostState.Frighten)
             {
                 collision.gameObject.GetComponent<GhostAI>().SetGhostEaten();
+                AudioManager.instance.PlaySEOnce(AudioManager.instance.AttackGhostSE);
                 GetCombo();
+                GetScore(10000);
             }
         }
     }
@@ -89,11 +90,10 @@ public class PlayerManager : MonoBehaviour
         AudioManager.instance.PlaySEOnce(AudioManager.instance.GetCoinSE);
         CoinUI.GetComponent<Animator>().SetTrigger("getCoin");
         MyCoins += 1;
-        MyScore += 100 + 10 * MyCombo;
 
         GetCombo();
+        GetScore(100 + 10 * MyCombo);
 
-        UpdateUI();
         if (MyCoins == NumOfAllCoins)
             SceneManager.LoadScene("GameWin");
     }
@@ -103,6 +103,12 @@ public class PlayerManager : MonoBehaviour
         ComboUI.GetComponent<Animator>().SetTrigger("getCombo");
         MyCombo += 1;
         ComboMeter = 1f;
+    }
+
+    public void GetScore(int value)
+    {
+        MyScore += value;
+        UpdateUI();
     }
 
     Coroutine runningCoroutine;
@@ -133,29 +139,52 @@ public class PlayerManager : MonoBehaviour
         foreach (GameObject enemy in Enemys)
             enemy.GetComponent<GhostAI>().SetGhostFrighten();
     }
-    IEnumerator ComboCoroutine()
-    {
-        while (true)
+
+    private void Update() {
+    
+        if (ComboMeter <= 0f)
         {
-            if (ComboMeter <= 0f)
-            {
-                MyCombo = 0;
-                ComboMeter = 0f;
-            }
-            else
-                ComboMeter -= Time.deltaTime / ComboDelayTime;
-
-            comboBar.size = ComboMeter;
-            ComboUI.text = MyCombo + " Combo";
-
-            Color color = barGradient.Evaluate(((MyCombo - 1) + ComboMeter)/100);
-
-            ComboUI.color = color;
-            fill.color = color;
-            CoinUI.color = color;
-            ScoreUI.color = color;
-
-            yield return null;
+            MyCombo = 0;
+            ComboMeter = 0f;
         }
+        else
+            ComboMeter -= Time.deltaTime / ComboDelayTime;
+
+        comboBar.size = ComboMeter;
+        ComboUI.text = MyCombo + " Combo";
+
+        Color color = barGradient.Evaluate(((MyCombo - 1) + ComboMeter)/100);
+
+        ComboUI.color = color;
+        fill.color = color;
+        CoinUI.color = color;
+        ScoreUI.color = color;
+
     }
+
+    // IEnumerator ComboCoroutine()
+    // {
+    //     while (true)
+    //     {
+    //         if (ComboMeter <= 0f)
+    //         {
+    //             MyCombo = 0;
+    //             ComboMeter = 0f;
+    //         }
+    //         else
+    //             ComboMeter -= Time.deltaTime / ComboDelayTime;
+
+    //         comboBar.size = ComboMeter;
+    //         ComboUI.text = MyCombo + " Combo";
+
+    //         Color color = barGradient.Evaluate(((MyCombo - 1) + ComboMeter)/100);
+
+    //         ComboUI.color = color;
+    //         fill.color = color;
+    //         CoinUI.color = color;
+    //         ScoreUI.color = color;
+
+    //         yield return null;
+    //     }
+    // }
 }

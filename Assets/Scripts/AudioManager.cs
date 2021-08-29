@@ -10,26 +10,28 @@ public class AudioManager : MonoBehaviour
 
     public AudioSource BGMPlayer, SEPlayer;
 
-    public AudioClip NormalBGM, GetCoinSE, GetPowerBGM, GetPowerSE;
+    public AudioClip NormalBGM, GetCoinSE, GetPowerBGM, GetPowerSE, AttackGhostSE;
 
     [SerializeField]
     public static float BGMVolume, SEVolume;
 
     [SerializeField]
-    float BGMTime, PowerTime;
+    float DefaultBGMTime, PowerBGMTime;
 
     Coroutine BGMcoroutine = null;
 
     private void Awake()
     {
         instance = this;
-        BGMVolume = BGMPlayer.volume;
         SEVolume = SEPlayer.volume;
+        BGMVolume = BGMPlayer.volume;
+        BGMPlayer.loop = true;
     }
 
     private void Start()
     {
-        PlayBGM(NormalBGM);
+        BGMPlayer.clip = NormalBGM;
+        BGMPlayer.Play();
     }
 
     public void PlaySEOnce(AudioClip audioClip)
@@ -51,7 +53,12 @@ public class AudioManager : MonoBehaviour
     //     if (BGMPlayer.clip == audioClip)
     //         return;
 
-        StartCoroutine(BGMChange(audioClip, 1f));
+        if (CurCoroutine != null)
+            StopCoroutine(CurCoroutine);
+
+        CurCoroutine = BGMChange(audioClip, 0.3f);
+
+        StartCoroutine(CurCoroutine);
     }
 
     // public void PlayBGM(AudioClip audioClip, float time)
@@ -67,10 +74,12 @@ public class AudioManager : MonoBehaviour
     //     }));
     // }
 
+    private IEnumerator CurCoroutine = null;
+
     private IEnumerator BGMChange(AudioClip audioClip, float fadeTime)
     {
         AudioSource audioSource = BGMPlayer;
-        float volume = BGMPlayer.volume;
+        float volume = BGMVolume;
 
         // Fade out
         while (audioSource.volume > 0)
@@ -86,20 +95,20 @@ public class AudioManager : MonoBehaviour
             yield return null;
         }
 
-        // 바꿀 BGM이 기본 BGM이 아니면 시간을 기록해라.
-        if (audioClip != NormalBGM)
-            BGMTime = BGMPlayer.time;
-        else
-            PowerTime = BGMPlayer.time;
+    
+        // 시간을 기록하고
+        if (audioClip == NormalBGM)
+            DefaultBGMTime = BGMPlayer.time;
+        else if (audioClip == GetPowerBGM)
+            PowerBGMTime = BGMPlayer.time;
 
-        BGMPlayer.loop = true;
         BGMPlayer.clip = audioClip;
 
-        // 바꿀 BGM이 기본 BGM이라면 기록한 시간으로 다시 시작한다.
+        // 나중에 다시 그부분부터 시작한다.
         if (audioClip == NormalBGM)
-            BGMPlayer.time = BGMTime;
+            BGMPlayer.time = DefaultBGMTime;
         else
-            BGMPlayer.time = PowerTime;
+            BGMPlayer.time = PowerBGMTime;
 
         BGMPlayer.Play();
 
