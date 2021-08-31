@@ -31,6 +31,8 @@ public class PlayerCamera : MonoBehaviour
     {
         if (focus == null)
             focus = GameObject.FindGameObjectWithTag("Player").transform;
+            
+        // Application.targetFrameRate = 60;
     }
 
     private void Update()

@@ -22,7 +22,7 @@ public class ButtonManager : MonoBehaviour
 
     public void GameStart()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneLoader.Instance.LoadScene("GameScene");
     }
 
     public void LisenceURL()

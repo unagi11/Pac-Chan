@@ -32,7 +32,7 @@ namespace TMPro.Examples
             if (!enabled)
                 return;
 
-            Application.targetFrameRate = TargetFrame;
+            // Application.targetFrameRate = TargetFrame;
 
             if (!isGUI)
                 return;
