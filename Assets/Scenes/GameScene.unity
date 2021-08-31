@@ -28821,7 +28821,7 @@ Transform:
   - {fileID: 949569401}
   - {fileID: 74800426}
   m_Father: {fileID: 1123132116}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &485691272
 GameObject:
@@ -48297,8 +48297,9 @@ GameObject:
   m_Component:
   - component: {fileID: 849318163}
   - component: {fileID: 849318164}
+  - component: {fileID: 849318165}
   m_Layer: 0
-  m_Name: Portal
+  m_Name: Right Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48317,8 +48318,8 @@ Transform:
   m_Children:
   - {fileID: 380219423}
   - {fileID: 16742764}
-  m_Father: {fileID: 1123132116}
-  m_RootOrder: 7
+  m_Father: {fileID: 1575763402}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &849318164
 BoxCollider:
@@ -48331,8 +48332,22 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &849318165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 849318162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d89d4040c3cf34782210c9c5a48348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Out: {fileID: 7119458706583794180}
+  isOuting: 0
 --- !u!1 &849479771
 GameObject:
   m_ObjectHideFlags: 0
@@ -58268,7 +58283,7 @@ Transform:
   m_LocalScale: {x: 2.5, y: 1, z: 2.5}
   m_Children: []
   m_Father: {fileID: 1123132116}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1110156487
 MeshCollider:
@@ -58686,9 +58701,8 @@ Transform:
   - {fileID: 480013843}
   - {fileID: 533743912}
   - {fileID: 1369576932}
+  - {fileID: 1575763402}
   - {fileID: 485403575}
-  - {fileID: 849318163}
-  - {fileID: 7119458706583794179}
   - {fileID: 1110156486}
   m_Father: {fileID: 0}
   m_RootOrder: 11
@@ -76203,6 +76217,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1575679365}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1575763401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1575763402}
+  m_Layer: 0
+  m_Name: Portals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1575763402
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575763401}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 849318163}
+  - {fileID: 7119458706583794179}
+  m_Father: {fileID: 1123132116}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1578677750
 GameObject:
   m_ObjectHideFlags: 0
@@ -101066,8 +101112,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7119458706583794179}
   - component: {fileID: 7119458706583794176}
+  - component: {fileID: 7119458706583794180}
   m_Layer: 0
-  m_Name: Portal
+  m_Name: Left Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101086,9 +101133,23 @@ Transform:
   m_Children:
   - {fileID: 7119458706663085004}
   - {fileID: 7119458706663085000}
-  m_Father: {fileID: 1123132116}
-  m_RootOrder: 8
+  m_Father: {fileID: 1575763402}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7119458706583794180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7119458706583794178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d89d4040c3cf34782210c9c5a48348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Out: {fileID: 849318165}
+  isOuting: 0
 --- !u!199 &7119458706644709160
 ParticleSystemRenderer:
   serializedVersion: 6

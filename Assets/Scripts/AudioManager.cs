@@ -97,9 +97,9 @@ public class AudioManager : MonoBehaviour
 
     
         // 시간을 기록하고
-        if (audioClip == NormalBGM)
+        if (BGMPlayer.clip == NormalBGM)
             DefaultBGMTime = BGMPlayer.time;
-        else if (audioClip == GetPowerBGM)
+        else if (BGMPlayer.clip == GetPowerBGM)
             PowerBGMTime = BGMPlayer.time;
 
         BGMPlayer.clip = audioClip;
@@ -107,7 +107,7 @@ public class AudioManager : MonoBehaviour
         // 나중에 다시 그부분부터 시작한다.
         if (audioClip == NormalBGM)
             BGMPlayer.time = DefaultBGMTime;
-        else
+        else if (audioClip == GetPowerBGM)
             BGMPlayer.time = PowerBGMTime;
 
         BGMPlayer.Play();
