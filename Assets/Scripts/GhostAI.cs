@@ -114,6 +114,7 @@ public class GhostAI : MonoBehaviour
 
         if (runningStateCoroutine != null) //억지로 바뀐경우면 runningStateCoroutine이 null이 아니다. Chase랑 Scatter은 억지로 바뀌어도 딱히 할게 없음.
             StopCoroutine(runningStateCoroutine);
+            
         runningStateCoroutine = StartCoroutine(Function.CoInvoke(chaseTime, () =>
         {
             runningStateCoroutine = null; // 상태가 끝까지 갔다는 표시로 Coroutine을 null로 초기화해준다.

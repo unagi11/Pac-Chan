@@ -67,7 +67,10 @@ public class PlayerManager : MonoBehaviour
                 MyCombo = 0;
                 ComboMeter = 0;
                 StopAllCoroutines();
-                SceneManager.LoadScene("GameOver");
+
+                GameResult.isWin = false;
+                GameResult.Score = MyScore;
+                SceneManager.LoadScene("ResultScene");
             }
             else if (ghostAI.currentState == GhostAI.GhostState.Frighten)
             {
@@ -95,7 +98,11 @@ public class PlayerManager : MonoBehaviour
         GetScore(100 + 10 * MyCombo);
 
         if (MyCoins == NumOfAllCoins)
-            SceneManager.LoadScene("GameWin");
+        {
+            GameResult.isWin = true;
+            GameResult.Score = MyScore;
+            SceneManager.LoadScene("ResultScene");
+        }
     }
 
     public void GetCombo()

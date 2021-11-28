@@ -113,5 +113,6 @@ public class SceneLoader : MonoBehaviour
         }
         
         Application.targetFrameRate = 60;
+        gameObject.SetActive(false);
     }
 }

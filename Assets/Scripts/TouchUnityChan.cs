@@ -23,6 +23,8 @@ public class TouchUnityChan : MonoBehaviour
     {
         Instantiate(HeartParticle, particleTransform.position, Quaternion.identity, transform);
 
+        // AudioManager.instance.PlaySEOnce(AudioManager.instance.randomVoices[UnityEngine.Random.Range(0, AudioManager.instance.randomVoices.Length-1)]);
+
         _animator.SetBool("Next", true);
     }
 

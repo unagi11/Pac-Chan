@@ -47,7 +47,7 @@ public class LoadingSceneController : MonoBehaviour
 
             if (frameCounter > LoadingAnimaiton.Length - 1)
             {
-                Application.targetFrameRate = 60;
+                Application.targetFrameRate = 144;
                 op.allowSceneActivation = true;
                 yield break;
             }

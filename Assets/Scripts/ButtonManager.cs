@@ -20,13 +20,9 @@ public class ButtonManager : MonoBehaviour
             canvasGroup.alpha = 1f;
     }
 
-    public void GameStart()
-    {
-        SceneLoader.Instance.LoadScene("GameScene");
-    }
+    public void GameStart() => SceneLoader.Instance.LoadScene("PlayScene");
 
-    public void LisenceURL()
-    {
-        Application.OpenURL("https://unity-chan.com/contents/license_en/");
-    }
+    public void TitleScene() => SceneManager.LoadScene("TitleScene");
+
+    public void LisenceURL() => Application.OpenURL("https://unity-chan.com/contents/license_en/");
 }

@@ -3,6 +3,7 @@ using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -10,7 +11,13 @@ public class AudioManager : MonoBehaviour
 
     public AudioSource BGMPlayer, SEPlayer;
 
-    public AudioClip NormalBGM, GetCoinSE, GetPowerBGM, GetPowerSE, AttackGhostSE;
+    public AudioClip NormalBGM,  AnimeSongBGM, GetPowerBGM;
+
+    public AudioClip GetCoinSE, GetPowerSE, AttackGhostSE, WinSE, DefeatSE;
+
+    public AudioClip WinVoice, DefeatVoice;
+
+    public AudioClip [] randomVoices;
 
     [SerializeField]
     public static float BGMVolume, SEVolume;
@@ -22,23 +29,47 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
-        SEVolume = SEPlayer.volume;
-        BGMVolume = BGMPlayer.volume;
-        BGMPlayer.loop = true;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+            SEVolume = SEPlayer.volume;
+            BGMVolume = BGMPlayer.volume;
+            BGMPlayer.loop = true;
+        }
+        else if (instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
     }
 
     private void Start()
     {
-        BGMPlayer.clip = NormalBGM;
+        SceneManager.sceneLoaded += (Scene s, LoadSceneMode l) => {
+            if (s.name == "PlayScene")
+                BGMPlayer.clip = NormalBGM;
+            else if (s.name == "TitleScene")
+                BGMPlayer.clip = AnimeSongBGM;
+            else
+                BGMPlayer.clip = null;
+
+            BGMPlayer.Play();
+        };
+
+        if (SceneManager.GetActiveScene().name == "PlayScene")
+            BGMPlayer.clip = NormalBGM;
+        else if (SceneManager.GetActiveScene().name == "TitleScene")
+            BGMPlayer.clip = AnimeSongBGM;
+
         BGMPlayer.Play();
     }
 
     public void PlaySEOnce(AudioClip audioClip)
     {
-        SEPlayer.loop = false;
-        SEPlayer.clip = audioClip;
-        SEPlayer.Play();
+        // SEPlayer.loop = false;
+        // SEPlayer.clip = audioClip;
+        SEPlayer.PlayOneShot(audioClip);
     }
 
     public void PlaySELoop(AudioClip audioClip)
@@ -50,8 +81,8 @@ public class AudioManager : MonoBehaviour
 
     public void PlayBGM(AudioClip audioClip)
     {
-    //     if (BGMPlayer.clip == audioClip)
-    //         return;
+        //     if (BGMPlayer.clip == audioClip)
+        //         return;
 
         if (CurCoroutine != null)
             StopCoroutine(CurCoroutine);
@@ -95,7 +126,7 @@ public class AudioManager : MonoBehaviour
             yield return null;
         }
 
-    
+
         // 시간을 기록하고
         if (BGMPlayer.clip == NormalBGM)
             DefaultBGMTime = BGMPlayer.time;
