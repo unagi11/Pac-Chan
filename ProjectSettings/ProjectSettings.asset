@@ -121,7 +121,7 @@ PlayerSettings:
     16:10: 0
     16:9: 0
     Others: 1
-  bundleVersion: 0.6
+  bundleVersion: 0.601
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -167,9 +167,9 @@ PlayerSettings:
   applicationIdentifier: {}
   buildNumber:
     iPhone: 112
-  AndroidBundleVersionCode: 544
+  AndroidBundleVersionCode: 601
   AndroidMinSdkVersion: 19
-  AndroidTargetSdkVersion: 0
+  AndroidTargetSdkVersion: 30
   AndroidPreferredInstallLocation: 1
   aotOptions: 
   stripEngineCode: 1
@@ -260,8 +260,8 @@ PlayerSettings:
   AndroidTargetArchitectures: 3
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/Administrator/Desktop/Games/key/user.keystore
-  AndroidKeyaliasName: pac_chan
+  AndroidKeystoreName: C:/Users/Administrator/Documents/Develop/Github/Pac-Chan Build/Key/user.keystore
+  AndroidKeyaliasName: pacchan_upload_key
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
